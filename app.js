@@ -25,71 +25,65 @@ app.set("view engine", "ejs");
 
 // middleware & static files
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-// mongoose and mongo sandbox routes
-app.get("/add_blog", (req, res) => {
-  const blog = new Blog({
-    title: "new blog",
-    content: "this is my new blog",
-  });
-
-  blog
-    .save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.get("/all_blogs", (req, res) => {
-  Blog.find()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.get("/get_blog", (req, res) => {
-  Blog.findById('66064204c6337849e3bb0854')
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
 app.get("/", (req, res) => {
-  res.redirect('/blogs');
+  res.redirect("/blogs");
 });
 
 // blog routes
-app.get('/blogs', (req, res)=>{
-  Blog.find().sort('create_at')
-    .then((result)=>{
-      res.render('index', { title: 'All blogs', blogs: result})
+// index
+app.get("/blogs", (req, res) => {
+  Blog.find()
+    .sort("create_at")
+    .then((result) => {
+      res.render("index", { title: "All blogs", blogs: result });
     })
     .catch((err) => {
       console.log(err);
     });
-})
+});
+
+// create index
+app.get("/blogs/create", (req, res) => {
+  res.render("create", { title: "create blog" });
+});
+
+// create
+app.post("/blogs", (req, res) => {
+  const blog = new Blog(req.body);
+  blog
+    .save()
+    .then((result) => {
+      res.redirect("/blogs");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+// delete
+app.delete("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+
+  Blog.findOneAndDelete(id).then((result) => res.json({ redirect: "/blogs" }));
+});
+
+// get by id
+app.get("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findById(id)
+    .then((result) => {
+      res.render("details", { title: "Details", blog: result });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
 
 app.get("/about", (req, res) => {
   res.render("about", { title: "about" });
-});
-
-// // redirects
-// app.get("/about-us", (req, res) => {
-//   res.redirect("/about");
-// });
-
-app.get("/blogs/create", (req, res) => {
-  res.render("create", { title: "create blog" });
 });
 
 // 404 page

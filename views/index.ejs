@@ -9,15 +9,15 @@
       <div class="blog-list">
         <% if(blogs.length > 0){ %> <% blogs.map((blog)=>{ %>
         <div class="blog-card">
-          <h3><%= blog.title %></h3>
-          <p><%= blog.content %></>
+          <a href="/blogs/<%= blog._id %>">
+            <h3><%= blog.title %></h3>
+            <p><%= blog.content %></p></a
+          >
         </div>
-
-
-      <% }) %> <% }else{ %>
-      <h3>No blogs available</h3>
-      <% } %>
-    </div>
+        <% }) %> <% }else{ %>
+        <h3>No blogs available</h3>
+        <% } %>
+      </div>
     </div>
 
     <%- include('./partials/footer.ejs') %>

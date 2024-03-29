@@ -47,6 +47,38 @@
   }
 }
 
+form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 50%;
+  margin: 40px auto;
+
+  input{
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  label{
+    text-transform: capitalize;
+  }
+
+  button{
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover{
+      background-color: #555;
+    }
+  }
+}
+
 footer {
   text-align: center;
   padding: 10px;
