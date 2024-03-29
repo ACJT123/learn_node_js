@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./partials/head.ejs') %>
+  <%- include('../partials/head.ejs') %>
   <body>
-    <%- include('./partials/nav.ejs') %>
+    <%- include('../partials/nav.ejs') %>
     <form action="/blogs" method="post">
       <label for="title">title</label>
       <input type="text" name="title" />
@@ -10,6 +10,6 @@
       <input type="text" name="content" /> <button>Submit</button>
     </form>
 
-    <%- include('./partials/footer.ejs') %>
+    <%- include('../partials/footer.ejs') %>
   </body>
 </html>

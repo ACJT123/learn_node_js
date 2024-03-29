@@ -1,8 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+const blogRoutes = require("./routes/blogRoutes");
 
-const Blog = require("./models/blog");
 
 // connect to mongodb
 const dbURI =
@@ -33,54 +33,8 @@ app.get("/", (req, res) => {
 });
 
 // blog routes
-// index
-app.get("/blogs", (req, res) => {
-  Blog.find()
-    .sort("create_at")
-    .then((result) => {
-      res.render("index", { title: "All blogs", blogs: result });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+app.use('/blogs', blogRoutes);
 
-// create index
-app.get("/blogs/create", (req, res) => {
-  res.render("create", { title: "create blog" });
-});
-
-// create
-app.post("/blogs", (req, res) => {
-  const blog = new Blog(req.body);
-  blog
-    .save()
-    .then((result) => {
-      res.redirect("/blogs");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-});
-
-// delete
-app.delete("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-
-  Blog.findOneAndDelete(id).then((result) => res.json({ redirect: "/blogs" }));
-});
-
-// get by id
-app.get("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-  Blog.findById(id)
-    .then((result) => {
-      res.render("details", { title: "Details", blog: result });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-});
 
 app.get("/about", (req, res) => {
   res.render("about", { title: "about" });
